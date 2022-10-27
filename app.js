@@ -159,7 +159,41 @@ $(function() {
         }
     };
 
+
+    // A random number generator used to
+    // generate new random seed for every game.
+    app.gameSeedGen = new Math.seedrandom();
+
+    // Override Math.random to generate numbers based on specific seed.
+    app.seedGame = function() {
+        var seed;
+
+        if (window.GameSeed) {
+            seed = window.GameSeed;
+            console.log('Game seed from window.GameSeed="' + window.GameSeed + '";');
+            console.log('To stop replaying: window.GameSeed = null;');
+        } else if (window.location.search.indexOf('seed') >= 0) {
+            const parser = new URL(window.location);
+            seed = parser.searchParams.get('seed');
+            console.log('Game seed from the URL parameter ?seed=', seed);
+            parser.searchParams.delete('seed');
+            console.log('To stop replaying omit the seed parameter:', parser.href);
+        } else {
+            seed = String(app.gameSeedGen());
+            console.log('New game seed: "' + seed + '"');
+            console.log('To replay: window.GameSeed = "' + seed + '";');
+            const parser = new URL(window.location);
+            parser.searchParams.set('seed', seed);
+            console.log('To replay:', parser.href);
+        }
+
+        Math.seedrandom(seed);
+    };
+
+
     app.startChallenge = function(challengeIndex, autoStart) {
+        app.seedGame();
+
         if(typeof app.world !== "undefined") {
             app.world.unWind();
             // TODO: Investigate if memory leaks happen here

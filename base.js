@@ -85,3 +85,52 @@ var getCodeObjFromCode = function(code) {
     return obj;
 }
 
+
+// lowdash random function, copied from the samve
+// version we have in lib/ - the 3.6.0:
+// (https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.6.0/lodash.js)
+// and then edited to use Math.random directly instead
+// of a copied reference, so that when seedrandom replaces
+//  Math.random the lowdash is affected.
+;(function() {
+
+  function baseRandom(min, max) {
+    return min + Math.floor(Math.random() * (max - min + 1));
+  }
+
+  _.random = function random(min, max, floating) {
+    if (floating && isIterateeCall(min, max, floating)) {
+      max = floating = null;
+    }
+    var noMin = min == null,
+        noMax = max == null;
+
+    if (floating == null) {
+      if (noMax && typeof min == 'boolean') {
+        floating = min;
+        min = 1;
+      }
+      else if (typeof max == 'boolean') {
+        floating = max;
+        noMax = true;
+      }
+    }
+    if (noMin && noMax) {
+      max = 1;
+      noMax = false;
+    }
+    min = +min || 0;
+    if (noMax) {
+      max = min;
+      min = 0;
+    } else {
+      max = +max || 0;
+    }
+    if (floating || min % 1 || max % 1) {
+      var rand = Math.random();
+      return Math.min(min + (rand * (max - min + parseFloat('1e-' + ((rand + '').length - 1)))), max);
+    }
+    return baseRandom(min, max);
+  };
+
+})();
