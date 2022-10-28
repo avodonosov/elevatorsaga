@@ -1,3 +1,19 @@
+My Changes
+==========
+This is my fork of the https://github.com/magwo/elevatorsaga
+
+It contains some convenience enhancements,
+see the commit history for descriptions.
+
+You can play it here:
+<https://avodonosov.github.io/elevatorsaga/>
+
+
+--------------------------------
+
+Original README
+
+
 Elevator Saga
 ===================
 The elevator programming game
