@@ -172,6 +172,7 @@ var createWorldCreator = function() {
                 e.update(dt);
                 e.updateElevatorMovement(dt);
             }
+
             for(var users=world.users, i=0, len=users.length; i < len; ++i) {
                 var u = users[i];
                 u.update(dt);
@@ -184,7 +185,23 @@ var createWorldCreator = function() {
                     users.splice(i, 1);
                 }
             }
-            
+
+            var oldestUserSpawnTimestamp = world.elapsedTime;
+            for(var users=world.users, i=world.users.length-1; i>=0; i--) {
+                var u = users[i];
+                if (oldestUserSpawnTimestamp > u.spawnTimestamp) {
+                    oldestUserSpawnTimestamp = u.spawnTimestamp;
+                }
+            }
+            for(var users=world.users, i=world.users.length-1; i>=0; i--) {
+                var u = users[i];
+                var oldest = u.spawnTimestamp <= oldestUserSpawnTimestamp;
+                if (oldest != u.oldest) {
+                    u.oldest = oldest;
+                    u.trigger("new_display_state");
+                }
+            }
+
             recalculateStats();
         };
 

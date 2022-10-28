@@ -254,6 +254,10 @@ button.right {
     color: #bbb;
 }
 
+.user.oldest {
+    color: red;
+}
+
 .elevator {
     background-color: #4F8686;
     border: 2px solid white;

@@ -15,6 +15,7 @@ function setTransformPos(elem, x, y) {
 function updateUserState($user, elem_user, user) {
     setTransformPos(elem_user, user.worldX, user.worldY);
     if(user.done) { $user.addClass("leaving"); }
+    if(user.oldest) { $user.addClass("oldest"); }
 };
 
 
